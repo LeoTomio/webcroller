@@ -3,17 +3,7 @@
 //Configurações de Proxy SENAI
 $proxy = '10.1.21.254:3128';
 
-//configuração de proxy
-$arrayConfig = array(
-    'http' => array(
-        'proxy' => $proxy,
-        'request_fulluri' => true
-    ),
-    'https' => array(
-        'proxy' => $proxy,
-        'request_fulluri' => true),
-);
-$context = stream_context_create($arrayConfig);
+
 //------------------------------------
 
 
@@ -35,36 +25,34 @@ libxml_clear_errors();
 //                    echo "<br><br/>";
 //Captura as tags div
 $tagsDiv = $dom->getElementsByTagName('div');
-$arrayP = array();
+$arrayP = [];
 
 
-foreach ($tagsDiv as $div) {
-    $classe = $div->getAttribute('class');
+foreach ($tagsDiv as $div) {                                    //Pega as tags Div
+    $classe = $div->getAttribute('class');                      //Pega as Divs que possue Class
 
-    if ($classe == 'page_content') {
-        $divsInternas = $div->getElementsByTagName('div');
+    if ($classe == 'page_content') {                            //Pega a classe chamada page_content
+        $divsInternas = $div->getElementsByTagName('div');      //Pega as divs internas da div page_content
 
         foreach ($divsInternas as $divInterna) {
-            $classeInterna = $divInterna->getAttribute('class');
+            $classeInterna = $divInterna->getAttribute('class');    //Pega as divs que possuem class, dentro da div page_content
 
 
-            if ($classeInterna == 'box_announce') {
-                $tagPInternas = $divInterna->getElementsByTagName('p');
+            if ($classeInterna == 'box_announce') {                    //Pega as classes chamadas box_announce
+                $tagPInternas = $divInterna->getElementsByTagName('p'); //Pega todas as tags P dentro de box_announce
 
 
-                foreach ($tagPInternas as $tagP) {
-
-                    $arrayP[] = $tagP->nodeValue;
-                    
-                    
+                foreach ($tagPInternas as $p) {                     
+                    $arrayP[] = $p->nodeValue;                          //Imprime todos os paragrafos
                 }
+                break;
             }
         }
+        break;
     }
 }
+//Exibe o ArrayP 
+print_r($arrayP);
 
-for ($i = 0; $i < count($arrayP); $i++) {
-echo '<p>'.($arrayP[$i]) . '</p>';     
-}
 ?>
 
